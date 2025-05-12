@@ -1,0 +1,101 @@
+[33mcommit c9adad55c8fd3ab2e90a484119da715da9d77333[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/more-graphics-printable-graphics[m[33m, [m[1;32mfeature/module-reporte-perfil[m[33m)[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Sun Dec 15 21:37:41 2024 -0500
+
+    el ultimo zip
+
+[33mcommit 659facd63cb4d8852d7b6a7a6863566007de626a[m[33m ([m[1;31morigin/feature/module-reporte-perfil[m[33m)[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Sun Dec 15 20:44:56 2024 -0500
+
+    se agrego la opcion de envie correo por las planificaciones
+
+[33mcommit 79dbf2321cb58719181d05c034f2fa50ae1e63fa[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Wed Dec 11 19:40:21 2024 -0500
+
+    Intento de verificacion mediante correo electronico
+
+[33mcommit 92f3e325fad1a91c63dcf2b6d332bb2168c149ef[m[33m ([m[1;31morigin/feature/crear-pdfs[m[33m, [m[1;32mfeature/crear-pdfs[m[33m)[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Thu Nov 28 02:56:23 2024 -0500
+
+    se agrego el ruc en los pdfs
+
+[33mcommit 6a57b812d3b2ea543f5013ce823a4b741f01a067[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Thu Nov 28 02:28:29 2024 -0500
+
+    se arreglo nuevamente las migraciones
+
+[33mcommit 095a48f4ecf4f9a9d9b1724ec88fcfe29fd1e5f3[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Wed Nov 27 09:48:21 2024 -0500
+
+    se agrego reporte para dispatch
+
+[33mcommit 1d2f22fede38bcb8afaeb2d413e324a0a076de09[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Wed Nov 27 08:30:21 2024 -0500
+
+    se hiciron los reportes de la cosecha,fermentacio y secado
+
+[33mcommit 51229be679a188a70355b2ac00f635610da61dd2[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Tue Nov 26 23:31:23 2024 -0500
+
+    ya esta creado los pdf para las planificaciones
+
+[33mcommit 2d3d9e3e68d442b7e7903525ab657fa29f679f68[m[33m ([m[1;33mtag: [m[1;33mv1.0.0[m[33m, [m[1;31morigin/widget_graficos[m[33m, [m[1;32mwidget_graficos[m[33m, [m[1;32mdevelop[m[33m)[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Mon Nov 18 23:15:01 2024 -0500
+
+    widget y la ruta arregrlo del traking en fermentacion
+
+[33mcommit 6dfed7217e6ec14e3c931ab8202238e4009be567[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Wed Nov 13 11:39:14 2024 -0500
+
+    se agregao widget pero hay error en fermentacion tracking
+
+[33mcommit 75f7f705c26614777f5590ee357ab6532f5fabf9[m[33m ([m[1;31morigin/Haciendo_reporte_despacho[m[33m, [m[1;32mHaciendo_reporte_despacho[m[33m)[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Tue Nov 12 13:37:04 2024 -0500
+
+    Despacho terminado
+
+[33mcommit fafd0818c650d9b9c5961a35071ce03b8c1574e1[m[33m ([m[1;31morigin/feature/creacion_recursos[m[33m, [m[1;32mfeature/creacion_recursos[m[33m)[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Tue Nov 12 03:50:04 2024 -0500
+
+    los tre modulos terminados
+
+[33mcommit 9767088d7ba37ee657ccb8fd2ade19ec99d08cb3[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Mon Nov 11 21:43:49 2024 -0500
+
+    Termiacion del muldulo harvest y haciendo seguiento de fermetnacion
+
+[33mcommit be374c8c737ea7c0bc3271f1ee4bfd2d70e9ee3a[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Sun Nov 10 21:54:53 2024 -0500
+
+    Creando modulo de cosecha harvest
+
+[33mcommit e3f7cb66af401ee62b4fd7ea9c8772b824d8fa58[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Sat Nov 9 00:51:44 2024 -0500
+
+    se hizo el modulo de secado con tabla y crud
+
+[33mcommit 0085e96303a2e2fb4e94d61ae8138189aa101968[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Fri Nov 8 23:44:09 2024 -0500
+
+    Agrega los recurso con filament
+
+[33mcommit 3508c1542f3ca8d8d11d88f15eecc5d26da3731c[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: Josue Rogel <josuerogelym@gmail.com>
+Date:   Fri Nov 8 22:15:16 2024 -0500
+
+    Primer commit: Vamos con todo

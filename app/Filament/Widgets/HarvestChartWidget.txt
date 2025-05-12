@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use Filament\Widgets\ChartWidget;
+use App\Models\Harvest;
+use Filament\Widgets\Widget;
+use Flowframe\Trend\Trend;
+use Illuminate\Support\Facades\DB;
+
+class HarvestChartWidget extends ChartWidget
+{
+    protected static ?string $heading = 'Harvest Statistics';
+    protected static ?string $description = 'Monthly harvest and weight data';
+    protected static ?int $sort = 1;
+
+        // Define the Blade view for this widget
+        //protected static string $view = 'filament.widgets.harvest-chart-widget';
+
+
+    public function getChartData()
+    {
+        // Get harvest count per month
+        $harvests = Trend::model(Harvest::class)
+            ->between(
+                start: now()->subYear(),
+                end: now(),
+            )
+            ->perMonth()
+            ->count();
+
+        // Get total weight per month
+        $weights = Trend::model(Harvest::class)
+            ->between(
+                start: now()->subYear(),
+                end: now(),
+            )
+            ->perMonth()
+            ->sum('weight');
+
+        return [
+            'labels' => $harvests->pluck('date')->toArray(),
+            'harvests' => $harvests->pluck('aggregate')->toArray(),
+            'weights' => $weights->pluck('aggregate')->toArray(),
+        ];
+    }
+
+    protected function getType(): string
+    {
+        return 'line';
+    }
+}

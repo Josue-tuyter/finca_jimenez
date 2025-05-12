@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\Harvest_tracking;
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\DB;
+
+class HarvestTrackingTypeOverview extends BaseWidget
+{
+    protected static ?string $heading = 'Estadísticas de Cosecha';
+
+    protected function getStats(): array
+    {
+        $averageSize = number_format(Harvest_tracking::avg('size'), 2);
+        $totalTracking = Harvest_tracking::count();
+
+        $humidityDistribution = Harvest_tracking::select('humidity', DB::raw('count(*) as total'))
+            ->groupBy('humidity')
+            ->orderByDesc('total')
+            ->first();
+
+        $mostCommonHumidity = $humidityDistribution ? $humidityDistribution->humidity : 'N/A';
+
+        $diseaseCount = Harvest_tracking::where('disease', '!=', 'Ninguna')->count();
+        $diseasePercentage = $totalTracking > 0 
+            ? number_format(($diseaseCount / $totalTracking) * 100, 1) 
+            : 0;
+
+        return [
+            // **Título para Seguimiento General**
+            Stat::make('Cosecha', '')
+                ->description('🔍 Seguimiento General de Cosecha')
+                ->color('gray'),
+
+            Stat::make('Total de Seguimientos', value: $totalTracking)
+                ->description('Número total de registros de cosecha')
+                ->color('success'),
+
+            Stat::make('Tamaño Promedio', $averageSize)
+                ->description('Promedio de tamaño por registro de cosecha')
+                ->color('info'),
+
+            // **Título para Condiciones de Proceso**
+            Stat::make('Cosecha', '')
+                ->description('🌿 Condiciones de Cosecha')
+                ->color('gray'),
+
+            Stat::make('Nivel de Humedad más Común', $mostCommonHumidity)
+                ->description('Condición de humedad más frecuente en la cosecha')
+                ->color('warning'),
+
+            // **Título para Estado de Salud**
+            Stat::make('Cosecha', '')
+                ->description('🩺 Estado de Salud de la Cosecha')
+                ->color('gray'),
+
+            Stat::make('Porcentaje con Enfermedades', $diseasePercentage . '%')
+                ->description($diseaseCount . ' registros con enfermedades')
+                ->color('danger'),
+        ];
+    }
+}

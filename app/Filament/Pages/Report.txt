@@ -1,0 +1,343 @@
+<?php
+
+namespace App\Filament\Pages;
+
+use App\Models\Fermentation_planning;
+use App\Models\User;
+use App\Models\Harvest_planning; // Ajusta según el modelo que uses
+use App\Models\Drying_planning;
+use App\Models\Dispatch;
+use Filament\Pages\Page;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
+use Filament\Actions\Action;
+use Maatwebsite\Excel\Excel as ExcelExcel;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;// Importa correctamente
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+
+
+class Report extends Page
+{
+    protected static ?string $navigationGroup = 'Despachos y reporte';
+    protected static ?int $navigationSort = 5;
+    protected static ?string $navigationLabel = 'Reportes';
+    
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string $view = 'filament.pages.report';
+
+
+
+    // excel para cosecha
+
+    public function exportHarvestPlanningToExcel()
+    {
+        $data = Harvest_planning::with(['parcel', 'worker'])->get()->map(function ($item) {
+            return [
+                'ID' => $item->id,
+                'Nombre' => $item->name,
+                'Fecha de Inicio' => $item->date_start,
+                'Fecha de Fin' => $item->date_end,
+                'Parcela' => $item->parcel->name ?? 'Sin asignar', // Relación con 'parcel'
+                'Trabajador' => $item->worker->name ?? 'Sin asignar', // Relación con 'worker'
+            ];
+        })->toArray();
+    
+        return Excel::download(new class($data) implements FromArray, WithHeadings {
+            private $data;
+    
+            public function __construct(array $data)
+            {
+                $this->data = $data;
+            }
+    
+            public function array(): array
+            {
+                return $this->data;
+            }
+    
+            public function headings(): array
+            {
+                return [
+                    'ID',
+                    'Nombre',
+                    'Fecha de Inicio',
+                    'Fecha de Fin',
+                    'Parcela',
+                    'Trabajador',
+                ];
+            }
+        }, 'Planificacion_Cosecha.xlsx');
+    }
+
+
+// para fermentacion  excel
+public function exportFermentationPlanningToExcel()
+{
+    $data = Fermentation_planning::with([ 'worker'])->get()->map(function ($item) {
+        return [
+            'ID' => $item->id,
+            'Nombre' => $item->name,
+            'Fecha de Inicio' => $item->F_date_start,
+            'Fecha de Fin' => $item->F_date_end,    
+            'Trabajador' => $item->worker->name ?? 'Sin asignar', // Relación con 'worker'
+        ];
+    })->toArray();
+
+    return Excel::download(new class($data) implements FromArray, WithHeadings {
+        private $data;
+
+        public function __construct(array $data)
+        {
+            $this->data = $data;
+        }
+
+        public function array(): array
+        {
+            return $this->data;
+        }
+
+        public function headings(): array
+        {
+            return [
+                'ID',
+                'Nombre',
+                'Fecha de Inicio',
+                'Fecha de Fin',
+                'Trabajador',
+            ];
+        }
+    }, 'Planificacion_Fermentacion.xlsx');
+}
+
+
+// excel de despacho
+
+public function exportDispatchToExcel()
+{
+    $data = Dispatch::with(['client'])->get()->map(function ($item) {
+        return [
+            'ID' => $item->id,
+            'Nombre'=> $item->name,
+            'Cantidad de Sacos' => $item->number_sacks,
+            'Fecha de Entrega' => $item->delivery_date,
+            'Nombre del Cliente' => $item->client->name ?? 'Sin asignar',
+
+        ];
+    })->toArray();
+
+    return Excel::download(new class($data) implements FromArray, WithHeadings {
+        private $data;
+
+        public function __construct(array $data)
+        {
+            $this->data = $data;
+        }
+
+        public function array(): array
+        {
+            return $this->data;
+        }
+
+        public function headings(): array
+        {
+            return [
+                'ID',
+                'Nombre',
+                'Cantidad de Sacos',
+                'Fecha de Entrega',
+                'Nombre del Cliente',
+            ];
+        }
+    }, 'Despachos.xlsx');
+}
+
+// excel para user
+
+public function exportUsersToExcel()
+{
+    $data = User::get()->map(function ($item) {
+        return [
+            'ID' => $item->id,
+            'Nombre' => $item->name,
+            'Correo Electrónico' => $item->email,
+            'Creado el' => $item->created_at,
+            //'Rol' => $item->roles->pluck('name')->implode(', ') ?? 'Sin asignar', // Relación con roles
+        ];
+    })->toArray();
+
+    return Excel::download(new class($data) implements FromArray, WithHeadings {
+        private $data;
+
+        public function __construct(array $data)
+        {
+            $this->data = $data;
+        }
+
+        public function array(): array
+        {
+            return $this->data;
+        }
+
+        public function headings(): array
+        {
+            return [
+                'ID',
+                'Nombre',
+                'Correo Electrónico',
+                'Creado el',
+                //'Rol',
+            ];
+        }
+    }, 'Usuarios.xlsx');
+}
+
+
+// excel para secado
+public function exportDryingPlanningToExcel()
+{
+    $data = Drying_planning::with([ 'worker'])->get()->map(function ($item) {
+        return [
+            'ID' => $item->id,
+            'Nombre' => $item->name,
+            'Fecha de Inicio' => $item->D_date_start,
+            'Fecha de Fin' => $item->D_date_end,
+            'Trabajador' => $item->worker->name ?? 'Sin asignar', // Relación con 'worker'
+        ];
+    })->toArray();
+
+    return Excel::download(new class($data) implements FromArray, WithHeadings {
+        private $data;
+
+        public function __construct(array $data)
+        {
+            $this->data = $data;
+        }
+
+        public function array(): array
+        {
+            return $this->data;
+        }
+
+        public function headings(): array
+        {
+            return [
+                'ID',
+                'Nombre',
+                'Fecha de Inicio',
+                'Fecha de Fin',
+                'Trabajador',
+            ];
+        }
+    }, 'Planificacion_Secado.xlsx');
+}
+
+
+
+
+
+//---------------------------------pdf-------------------------------------------------------
+
+
+
+
+// Pdf para la fermnetacion
+public function exportFermentationPlanningToPDF()
+{
+    $data = Fermentation_planning::all(); // Obtén los datos con relaciones
+
+    // Asegúrate de codificar el contenido al cargar la vista del PDF
+    $pdf = Pdf::loadView('report.fermentation_report', ['data' => $data]);
+
+    // Seteando la codificación explícitamente
+    $pdf->setOption('encoding', 'UTF-8'); 
+
+    return response()->streamDownload(
+        fn() => print($pdf->output()),
+        'Planificacion_Fermentacion.pdf'
+    );
+}
+
+//pdf para el descho
+
+public function exportDispatchToPDF()
+{
+    $data = Dispatch::all();
+
+    $pdf = Pdf::loadView('report.dispatch', ['data' => $data]);
+    
+    $pdf->setOption('encoding', 'UTF-8');
+
+    return response()->streamDownload(
+        fn() => print($pdf->output()),
+        'Despachos.pdf'
+    );
+}
+
+// pdf para los usuarios
+public function exportUsersToPDF()
+{
+    $data = User::all();
+
+    $pdf = Pdf::loadView('report.users', ['data' => $data]);
+    
+    $pdf->setOption('encoding', 'UTF-8');
+
+    return response()->streamDownload(
+        fn() => print($pdf->output()),
+        'Usuarios.pdf'
+    );
+}
+
+// pdf para la secado 
+public function exportDryingPlanningToPDF()
+{
+    $data = Drying_planning::all();
+
+    $pdf = Pdf::loadView('report.drying_report', ['data' => $data]);
+    
+    $pdf->setOption('encoding', 'UTF-8');
+
+    return response()->streamDownload(
+        fn() => print($pdf->output()),
+        'Planificacion_Secado.pdf'
+    );
+}
+
+
+// pdf para la cosecha
+public function exportHarvestPlanningToPDF()
+{
+    $data = Harvest_planning::all();
+
+    $pdf = Pdf::loadView('report.harvest_planning', ['data' => $data]);
+    
+    $pdf->setOption('encoding', 'UTF-8');
+
+    return response()->streamDownload(
+        fn() => print($pdf->output()),
+        'Planificacion_Cosecha.pdf'
+    );
+}
+
+
+    // public function exportToPDF()
+    // {
+    //     $data = Harvest_planning::all(); // Cambia por los datos que necesites
+    //     $pdf = Pdf::loadView('report.harvest_planning', ['data' => $data]);
+    //     return response()->streamDownload(
+    //         fn() => print($pdf->output()),
+    //         'Planificacion_Cosecha.pdf'
+    //     );
+    // }
+
+
+
+
+
+
+}
